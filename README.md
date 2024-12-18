@@ -160,7 +160,6 @@ This structure of this project is based on multi-tier architecture where we have
 * `controller`: This layer is responsible for exposing the REST-based API that the user will call, and it is the
   entry point for the service.
 * `service`: The service layer holds the classes responsible for having business logic.
-* `repository`: contains the different types of file loaders that are used to read the data files shared by partners.
 * `exception`: contains Custom Exception classes and `GlobalExceptionHandler` to handle any exception in the
   application.
 * `model`: contains the POJO classes used in the application.
