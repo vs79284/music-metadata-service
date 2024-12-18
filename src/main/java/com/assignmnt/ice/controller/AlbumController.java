@@ -50,6 +50,12 @@ public class AlbumController {
         return ResponseEntity.ok(track);
     }
 
+    @GetMapping("/{albumId}/is-released")
+    public ResponseEntity<Boolean> isAlbumReleased(@PathVariable String albumId) {
+        boolean isReleased = albumService.isAlbumReleased(albumId);
+        return ResponseEntity.ok(isReleased);
+    }
+
 
     @PostMapping(path = "/{albumId}/tracks", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addTrackToAlbum(@PathVariable String albumId,

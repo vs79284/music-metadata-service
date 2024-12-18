@@ -76,6 +76,9 @@ public class AlbumServiceInMemory implements IAlbumService {
     @Override
     public Boolean isAlbumReleased(String albumId) {
         Album album = albumRepo.get(albumId);
+        if( albumRepo.get(albumId)==null){
+            throw new AlbumNotFoundException("Album not found with id "+ albumId);
+        }
         return album.getReleaseDate() != null && album.getReleaseDate().isBefore(LocalDate.now());
     }
 

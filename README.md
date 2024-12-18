@@ -19,7 +19,6 @@ This application uses HashMap as in-memory storage to store the album and tracks
 
 ## Assumptions
 
-
 1. Artist as a non-separate concept.
     * Reason: The artist is treated as an attribute of an album, and there is no standalone artist entity.
     * Impact: If this contract changes to incremental data, we need to add one more Entity to store the artist information
@@ -32,6 +31,49 @@ This application uses HashMap as in-memory storage to store the album and tracks
    
 4. Persistent Layer
    * Repository layer will abstract database interaction but won't be fully implemented, instead HashMap is used as local storage.
+
+
+## Domain Models
+
+Here we have two different models
+
+1. **Album**
+   1. There are multiple attribute can be taken into conisderation while creating Album, but for simplicity i have choosen to use
+      name, artrist, release date and tracks.
+
+2. **Track**
+   1. Similarly, for track model, I have choosen parameters such as "track title, durations
+
+## Core Service Design
+
+### REST API Interface
+The **AlbumController** class is responsible to expose the below endpoints to define required behavior.
+
+POST http://localhost:8081/album  `Add an album with an artist`
+
+GET http://127.0.0.1:8080/album?query=test `search for album by title using Levenshtein distance algorithm`
+
+POST http://localhost:8081/album/{albumId}/tracks `add tracks to album`
+
+PATCH http://localhost:8081/album/{albumId} `set album release date`
+
+GET http://127.0.0.1:8080/album/{albumId}/is-released `a way to check if album is released`
+
+
+### Persistent Layer Interface
+The **IAlbumService** interface defines the abstraction of the underneath implementation of the persistent layer.
+
+Below are the behavior a service layer should support.
+
+    Album addAlbum(AlbumRequestBody albumRequestBody)
+
+    Album addTracksToAlbum(String albumId, List<TrackRequestBody> trackRequests);
+
+    Album setReleaseDate(String albumId, AlbumRequestBody albumRequestBody);
+
+    Boolean isAlbumReleased(String albumId);
+
+    List<Album> searchAlbumsByTitle(String title);
 
 ## Getting Started
 
@@ -114,7 +156,6 @@ This structure of this project is based on multi-tier architecture where we have
 * `service`: The service layer holds the classes responsible for having business logic.
 * `enity`: Application level configuration.
 * `repository`: contains the different types of file loaders that are used to read the data files shared by partners.
-* `deserializer`: contains the classes that are used by Jackson Library to deserialize the file content.
 * `exception`: contains Custom Exception classes and `GlobalExceptionHandler` to handle any exception in the
   application.
 * `model`: contains the POJO classes used in the application.
