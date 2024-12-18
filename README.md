@@ -27,7 +27,7 @@ This application uses HashMap as in-memory storage to store the album and tracks
     * An album can have multiple tracks( 1:n) relationship. One track will only belong to single album.
 
 3. Levenshtein distance algorithm
-    * This application uses Apache library (org.apache.commons.lang3.StringUtils) for album title search behavior.
+    * This application uses Apache library (org.apache.commons.lang3.StringUtils) for album title search behavior and edit count is less than 3.
    
 4. Persistent Layer
    * Repository layer will abstract database interaction but won't be fully implemented, instead HashMap is used as local storage.
@@ -74,6 +74,7 @@ Below are the behavior a service layer should support.
     Boolean isAlbumReleased(String albumId);
 
     List<Album> searchAlbumsByTitle(String title);
+
 
 ## Getting Started
 
@@ -154,7 +155,6 @@ This structure of this project is based on multi-tier architecture where we have
 * `controller`: This layer is responsible for exposing the REST-based API that the user will call, and it is the
   entry point for the service.
 * `service`: The service layer holds the classes responsible for having business logic.
-* `enity`: Application level configuration.
 * `repository`: contains the different types of file loaders that are used to read the data files shared by partners.
 * `exception`: contains Custom Exception classes and `GlobalExceptionHandler` to handle any exception in the
   application.
@@ -181,6 +181,6 @@ This structure of this project is based on multi-tier architecture where we have
 - http://localhost:8080/swagger-ui/index.html
 
 ### Curl Request
-
 ` curl --location 'http://localhost:8081/album' --header 'Content-Type: application/json' --data '{"title":"Test Album","artist":"Test Album","releaseDate":[2024,12,18]}'
 
+There are efficient datastore are available such as Elasticsearch and fuzzy/match query can be used.

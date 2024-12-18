@@ -24,8 +24,8 @@ class AlbumServiceInMemoryTest {
         AlbumRequest requestBody = new AlbumRequest("Test Album", "Test Artist", LocalDate.now());
 
         Album album = albumService.addAlbum(requestBody);
-        assertNotNull(album.getId());
-        assertEquals("Test Album", album.getTitle());
+        assertNotNull(album.id());
+        assertEquals("Test Album", album.title());
     }
 
     @Test
@@ -33,8 +33,8 @@ class AlbumServiceInMemoryTest {
         AlbumRequest requestBody = new AlbumRequest("Test Album", "Test Artist", LocalDate.now());
 
         Album album = albumService.addAlbum(requestBody);
-        assertNotNull(album.getId());
-        assertEquals("Test Album", album.getTitle());
+        assertNotNull(album.id());
+        assertEquals("Test Album", album.title());
         AlbumConflictException exception = assertThrows(
 
                 AlbumConflictException.class,
@@ -49,8 +49,8 @@ class AlbumServiceInMemoryTest {
         TrackRequest trackRequest = new TrackRequest("Test Track", Duration.ofMinutes(5), LocalDate.now());
         List<TrackRequest> tracks = new LinkedList<>();
         tracks.add(trackRequest);
-        Album updatedAlbum = albumService.addTracksToAlbum(album.getId(), tracks);
-        assertEquals(1, updatedAlbum.getTracks().size());
+        Album updatedAlbum = albumService.addTracksToAlbum(album.id(), tracks);
+        assertEquals(1, updatedAlbum.tracks().size());
 
     }
 
@@ -64,7 +64,7 @@ class AlbumServiceInMemoryTest {
     void isAlbumReleased() {
         AlbumRequest requestBody = new AlbumRequest("Test Album", "Test Artist", LocalDate.now().minusDays(2));
         Album album = albumService.addAlbum(requestBody);
-        assertTrue(albumService.isAlbumReleased(album.getId()));
+        assertTrue(albumService.isAlbumReleased(album.id()));
     }
 
     @Test
@@ -74,7 +74,7 @@ class AlbumServiceInMemoryTest {
         TrackRequest trackRequest = new TrackRequest("Test Track", Duration.ofMinutes(5), LocalDate.now());
         List<TrackRequest> tracks = new LinkedList<>();
         tracks.add(trackRequest);
-        Album updatedAlbum = albumService.addTracksToAlbum(album.getId(), tracks);
+        Album updatedAlbum = albumService.addTracksToAlbum(album.id(), tracks);
 
         List<Album> result = albumService.searchAlbumsByTitle("Tets Album");
         assertEquals(1,result.size());

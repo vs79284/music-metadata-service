@@ -32,58 +32,54 @@ public class AlbumServiceInMemory implements IAlbumService {
     @Override
     public Album addAlbum(AlbumRequest albumRequest) {
 
-        //String id = UUID.randomUUID().toString();
         String id = helper.generateId(albumRequest.title());
-        if( albumRepo.get(id)!=null){
+        Optional<Album> albumOptional = Optional.ofNullable(albumRepo.get(id));
+        if(albumOptional.isPresent()){
             throw new AlbumConflictException("Album already exist with title "+ albumRequest.title());
         }
-        Album album = new Album();
-        album.setArtist(albumRequest.artist());
-        album.setTitle(albumRequest.title());
-        album.setReleaseDate(albumRequest.releaseDate());
-        album.setId(id);
-        album.setTracks(new LinkedList<>());
-        albumRepo.put(
-                id, album);
+
+        Album album = new Album(id,albumRequest.title(),albumRequest.artist(),albumRequest.releaseDate(),new LinkedList<>());
+        albumRepo.put(id, album);
         return album;
     }
 
     @Override
     public Album addTracksToAlbum(String albumId, List<TrackRequest> trackRequests) {
-        Album album = albumRepo.get(albumId);
-        if( albumRepo.get(albumId)==null){
+
+        Optional<Album> albumOptional = Optional.ofNullable(albumRepo.get(albumId));
+        if(albumOptional.isEmpty()){
             throw new AlbumNotFoundException("Album not found with id "+ albumId);
         }
+
         trackRequests.forEach(t -> {
-            Track track = new Track();
-            track.setDuration(t.duration());
-            track.setTitle(t.title());
-            album.getTracks().add(track);
+            Track track = new Track("ID",t.title(), t.duration());
+            albumOptional.get().tracks().add(track);
         });
-        return album;
+        return albumOptional.get();
     }
 
     @Override
     public Album setReleaseDate(String albumId, AlbumRequest albumRequest) {
-        Album album = albumRepo.get(albumId);
-        if( albumRepo.get(albumId)==null){
+        Optional<Album> albumOptional = Optional.ofNullable(albumRepo.get(albumId));
+        if(albumOptional.isEmpty()){
             throw new AlbumNotFoundException("Album not found with id "+ albumId);
         }
-        album.setReleaseDate(albumRequest.releaseDate());
-        return album;
+        Album newAlbum = new Album(albumId,albumOptional.get().title(),albumOptional.get().artist(),albumRequest.releaseDate(),albumOptional.get().tracks());
+        albumRepo.put(albumId,newAlbum);
+        return newAlbum;
     }
 
     @Override
     public Boolean isAlbumReleased(String albumId) {
-        Album album = albumRepo.get(albumId);
-        if( albumRepo.get(albumId)==null){
+        Optional<Album> albumOptional = Optional.ofNullable(albumRepo.get(albumId));
+        if(albumOptional.isEmpty()){
             throw new AlbumNotFoundException("Album not found with id "+ albumId);
         }
-        return album.getReleaseDate() != null && album.getReleaseDate().isBefore(LocalDate.now());
+        return albumOptional.get().releaseDate() != null && albumOptional.get().releaseDate().isBefore(LocalDate.now());
     }
 
     @Override
     public List<Album> searchAlbumsByTitle(String title) {
-        return albumRepo.values().stream().filter(album -> StringUtils.getLevenshteinDistance(album.getTitle().toLowerCase(), title.toLowerCase()) <= 3).collect(Collectors.toList());
+        return albumRepo.values().stream().filter(album -> StringUtils.getLevenshteinDistance(album.title().toLowerCase(), title.toLowerCase()) <= 3).collect(Collectors.toList());
     }
 }

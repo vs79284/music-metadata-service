@@ -36,14 +36,6 @@
         <spring.openapi.version>2.2.0</spring.openapi.version>
     </properties>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -54,11 +46,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <artifactId>spring-boot-starter-test</artifactId>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
         <dependency>
             <artifactId>spring-boot-devtools</artifactId>
             <groupId>org.springframework.boot</groupId>
@@ -118,14 +105,6 @@
                 <configuration>
                     <excludes>
                         <exclude>com/assignmnt/ice/entity/**</exclude>
-                        <!-- Exclude Model and main packages from code coverage -->
-<!--                        <exclude>com/trivago/casestudy/priceservice/model/**</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/config/AppConfig.java</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/service/SchedulerService</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/exception/ErrorResponse.java</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/exception/BadRequestException.java</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/exception/ResourceNotFoundException.java</exclude>-->
-<!--                        <exclude>com/trivago/casestudy/priceservice/CasestudyApplication</exclude>-->
                     </excludes>
                 </configuration>
                 <executions>

@@ -31,7 +31,7 @@ public class AlbumController {
     public ResponseEntity<Album> addAlbum(
             @RequestBody AlbumRequest albumRequest) {
         Album album = albumService.addAlbum(albumRequest);
-        URI location = URI.create("/album/"+album.getId());
+        URI location = URI.create("/album/"+album.id());
         return ResponseEntity.created(location).body(album);
     }
 
