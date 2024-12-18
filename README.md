@@ -9,10 +9,10 @@ This application uses HashMap as in-memory storage to store the album and tracks
 ## Table of Contents
 
 - [Assumptions](#assumptions)
-- [Domain Models](#Domain Models)
-- [ER Diagram](#ER Diagram)
-- [Core Service Design](#Core Service Design) 
-- [Getting Started](#Getting Started)
+- [Domain Models](#Domain-Models)
+- [ER Diagram](#ER-Diagram)
+- [Core Service Design](#Core-Service-Design) 
+- [Getting Started](#Getting-Started)
 - [Project Structure](#Project-Structure)
 - [Code Coverage-JaCoCo](#Code-Coverage)
 - [Swagger](#Swagger-Link)
