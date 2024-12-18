@@ -104,10 +104,51 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <groupId>org.jacoco</groupId>
+                    <version>${jacoco.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludeDevtools>false</excludeDevtools>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes> <!-- Exclude Model and main packages from code coverage -->
+<!--                        <exclude>com/trivago/casestudy/priceservice/model/**</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/config/AppConfig.java</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/service/SchedulerService</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/exception/ErrorResponse.java</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/exception/BadRequestException.java</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/exception/ResourceNotFoundException.java</exclude>-->
+<!--                        <exclude>com/trivago/casestudy/priceservice/CasestudyApplication</exclude>-->
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <id>report</id>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+                <groupId>org.jacoco</groupId>
             </plugin>
         </plugins>
     </build>

@@ -2,6 +2,7 @@ package com.assignmnt.ice.service;
 
 import com.assignmnt.ice.entity.Album;
 import com.assignmnt.ice.entity.Track;
+import com.assignmnt.ice.exceptions.AlbumConflictException;
 import com.assignmnt.ice.model.request.AlbumRequestBody;
 import com.assignmnt.ice.model.request.TrackRequestBody;
 import com.assignmnt.ice.utils.Helper;
@@ -29,13 +30,17 @@ class AlbumServiceInMemoryTest {
     }
 
     @Test
-    void addExistingAlbum() {
+    void shouldThrowConflictExceptionWhenAlbumExists() {
         AlbumRequestBody requestBody = new AlbumRequestBody("Test Album", "Test Artist", LocalDate.now());
 
         Album album = albumService.addAlbum(requestBody);
         assertNotNull(album.getId());
         assertEquals("Test Album", album.getTitle());
-        albumService.addAlbum(requestBody);
+        AlbumConflictException exception = assertThrows(
+
+                AlbumConflictException.class,
+                () -> albumService.addAlbum(requestBody)
+        );
     }
 
     @Test
