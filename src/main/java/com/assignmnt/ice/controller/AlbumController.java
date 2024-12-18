@@ -1,7 +1,5 @@
 package com.assignmnt.ice.controller;
 
-import com.assignmnt.ice.dto.CreateAlbumResponse;
-import com.assignmnt.ice.dto.CreateTrackResponse;
 import com.assignmnt.ice.entity.Album;
 import com.assignmnt.ice.model.request.AlbumRequestBody;
 import com.assignmnt.ice.model.request.TrackRequestBody;
@@ -9,7 +7,6 @@ import com.assignmnt.ice.service.IAlbumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

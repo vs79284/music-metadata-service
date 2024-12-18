@@ -41,6 +41,7 @@ class AlbumControllerTest {
 
     ObjectMapper objectMapper;
 
+    String albumId;
     @BeforeEach
     void setUp() {
         requestBody = new AlbumRequestBody("Test Album", "Test Artist", LocalDate.now());
@@ -65,6 +66,7 @@ class AlbumControllerTest {
     }
     @Test
     void shouldAddNewAlbum() throws Exception {
+        requestBody = new AlbumRequestBody("Test New Album", "Test New Artist", LocalDate.now());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -74,11 +76,6 @@ class AlbumControllerTest {
 
     @Test
     void shouldThrowResourceConflictExceptionWhileAddingAlbum() throws Exception {
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/album")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(asJsonString(requestBody)))
-                .andExpect(status().isCreated());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,11 +110,6 @@ class AlbumControllerTest {
 
     @Test
     void getAlbum() throws Exception {
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/album")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(asJsonString(requestBody)))
-                .andExpect(status().isCreated());
         requestBody = new AlbumRequestBody("Test Album2", "Test Artist 1 ", LocalDate.now());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
@@ -133,7 +125,8 @@ class AlbumControllerTest {
                 .andExpect(status().isCreated());
 
         String responseJson = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/album/{title}","Test Album2")
+                        MockMvcRequestBuilders.get("/album")
+                                .param("query","Test Album2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
                 .andExpect(status().isOk())
@@ -145,7 +138,8 @@ class AlbumControllerTest {
 
 
         responseJson = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/album/{title}","abc")
+                        MockMvcRequestBuilders.get("/album")
+                                .param("query","abc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
                 .andExpect(status().isOk())
@@ -156,7 +150,8 @@ class AlbumControllerTest {
         assert resultAlbums.size() == 0;
 
         responseJson = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/album/{title}","Albmu1")
+                        MockMvcRequestBuilders.get("/album")
+                                .param("query","album1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
                 .andExpect(status().isOk())
@@ -170,15 +165,21 @@ class AlbumControllerTest {
 
     @Test
     void updateReleaseDate() throws Exception {
+        requestBody = new AlbumRequestBody("Test update relesase Album", "Test New Artist", LocalDate.now());
 
-        mockMvc.perform(
+        String response = mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
 
+                .andExpect(jsonPath("$.id").exists()) // Verify the albumId in the response
+                .andReturn()
+                .getResponse()
+                .getContentAsString(); // Extract the full JSON response
+        String albumId = JsonPath.parse(response).read("$.id");
         mockMvc.perform(
-                        MockMvcRequestBuilders.patch("/album")
+                        MockMvcRequestBuilders.patch("/album/{albumId}",albumId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
                 .andExpect(status().isOk());

@@ -1,11 +1,14 @@
 package com.assignmnt.ice.utils;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
+
 @Component
+@Scope("prototype")
 public class Helper {
 
     public String generateId(String title){

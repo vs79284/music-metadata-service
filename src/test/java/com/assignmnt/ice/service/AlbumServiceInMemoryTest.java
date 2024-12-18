@@ -4,6 +4,7 @@ import com.assignmnt.ice.entity.Album;
 import com.assignmnt.ice.entity.Track;
 import com.assignmnt.ice.model.request.AlbumRequestBody;
 import com.assignmnt.ice.model.request.TrackRequestBody;
+import com.assignmnt.ice.utils.Helper;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -15,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AlbumServiceInMemoryTest {
 
-    AlbumServiceInMemory albumService = new AlbumServiceInMemory();
+    Helper helper = new Helper();
+    AlbumServiceInMemory albumService = new AlbumServiceInMemory(helper);
 
     @Test
     void addAlbum() {

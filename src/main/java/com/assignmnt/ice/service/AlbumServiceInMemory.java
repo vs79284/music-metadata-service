@@ -23,7 +23,11 @@ public class AlbumServiceInMemory implements IAlbumService {
     Map<String, Album> albumRepo = new HashMap<>();
 
     @Autowired
-    Helper helper;
+    private final Helper helper;
+
+    public AlbumServiceInMemory(Helper helper) {
+        this.helper = helper;
+    }
 
     @Override
     public Album addAlbum(AlbumRequestBody albumRequestBody) {
