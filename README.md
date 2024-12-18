@@ -160,16 +160,6 @@ This structure of this project is based on multi-tier architecture where we have
   application.
 * `model`: contains the POJO classes used in the application.
 
-![price-service-design.png](price-service-design.png)
-
-* Request received by PriceServiceController
-* PriceServiceController calls PriceService to fetch the price list.
-* PriceService use the DataLoader service to get data.
-* The DataLoader service loads the price list of accommodations in memory objects.
-* The AdvertiseFileSystem watcher will watch the data file directory to detect any price updates in the shared file.
-* If any file is updated, FileSystemWater will generate an event that is listened to by the AdvertiseFileChangeLister.
-* AdvertseFileChangeListner will call the dataloader to update the in-memory object with the latest file data.
-
 ### Code Coverage
 
 * Mockito and SpringBoot test framework are used for Junit to achieve `85%+` code coverage.
