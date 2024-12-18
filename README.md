@@ -65,11 +65,11 @@ The **IAlbumService** interface defines the abstraction of the underneath implem
 
 Below are the behavior a service layer should support.
 
-    Album addAlbum(AlbumRequestBody albumRequestBody)
+    Album addAlbum(AlbumRequestBody albumRequest)
 
     Album addTracksToAlbum(String albumId, List<TrackRequestBody> trackRequests);
 
-    Album setReleaseDate(String albumId, AlbumRequestBody albumRequestBody);
+    Album setReleaseDate(String albumId, AlbumRequestBody albumRequest);
 
     Boolean isAlbumReleased(String albumId);
 
@@ -182,6 +182,5 @@ This structure of this project is based on multi-tier architecture where we have
 
 ### Curl Request
 
-`curl --location 'localhost:8080/priceservice/prices/13478'`
-` [{"id":100,"partnerId":13478,"currency":"EUR","price":1351.85}]`  
-`
+` curl --location 'http://localhost:8081/album' --header 'Content-Type: application/json' --data '{"title":"Test Album","artist":"Test Album","releaseDate":[2024,12,18]}'
+

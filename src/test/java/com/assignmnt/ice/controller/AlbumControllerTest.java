@@ -4,8 +4,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.assignmnt.ice.entity.Album;
-import com.assignmnt.ice.model.request.AlbumRequestBody;
-import com.assignmnt.ice.model.request.TrackRequestBody;
+import com.assignmnt.ice.model.request.AlbumRequest;
+import com.assignmnt.ice.model.request.TrackRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
@@ -25,17 +25,15 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class AlbumControllerTest {
 
-    AlbumRequestBody requestBody ;
+    AlbumRequest requestBody ;
 
-    List<TrackRequestBody> tracks;
+    List<TrackRequest> tracks;
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,11 +42,11 @@ class AlbumControllerTest {
     String albumId;
     @BeforeEach
     void setUp() {
-        requestBody = new AlbumRequestBody("Test Album", "Test Artist", LocalDate.now());
-        AlbumRequestBody requestBody = new AlbumRequestBody("Test Album", "Test Artist", LocalDate.now());
-        TrackRequestBody trackRequestBody = new TrackRequestBody("Test Track", Duration.ofMinutes(5), LocalDate.now());
+        requestBody = new AlbumRequest("Test Album", "Test Artist", LocalDate.now());
+        AlbumRequest requestBody = new AlbumRequest("Test Album", "Test Artist", LocalDate.now());
+        TrackRequest trackRequest = new TrackRequest("Test Track", Duration.ofMinutes(5), LocalDate.now());
         tracks = new LinkedList<>();
-        tracks.add(trackRequestBody);
+        tracks.add(trackRequest);
     }
 
     @AfterEach
@@ -66,7 +64,7 @@ class AlbumControllerTest {
     }
     @Test
     void shouldAddNewAlbum() throws Exception {
-        requestBody = new AlbumRequestBody("Test New Album", "Test New Artist", LocalDate.now());
+        requestBody = new AlbumRequest("Test New Album", "Test New Artist", LocalDate.now());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -110,13 +108,13 @@ class AlbumControllerTest {
 
     @Test
     void getAlbum() throws Exception {
-        requestBody = new AlbumRequestBody("Test Album2", "Test Artist 1 ", LocalDate.now());
+        requestBody = new AlbumRequest("Test Album2", "Test Artist 1 ", LocalDate.now());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(requestBody)))
                 .andExpect(status().isCreated());
-        requestBody = new AlbumRequestBody("Test Album3", "Test Artist 2", LocalDate.now());
+        requestBody = new AlbumRequest("Test Album3", "Test Artist 2", LocalDate.now());
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")
@@ -165,7 +163,7 @@ class AlbumControllerTest {
 
     @Test
     void updateReleaseDate() throws Exception {
-        requestBody = new AlbumRequestBody("Test update relesase Album", "Test New Artist", LocalDate.now());
+        requestBody = new AlbumRequest("Test update relesase Album", "Test New Artist", LocalDate.now());
 
         String response = mockMvc.perform(
                         MockMvcRequestBuilders.post("/album")

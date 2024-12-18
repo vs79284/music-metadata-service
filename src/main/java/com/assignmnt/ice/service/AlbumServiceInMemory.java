@@ -4,8 +4,8 @@ import com.assignmnt.ice.entity.Album;
 import com.assignmnt.ice.entity.Track;
 import com.assignmnt.ice.exceptions.AlbumConflictException;
 import com.assignmnt.ice.exceptions.AlbumNotFoundException;
-import com.assignmnt.ice.model.request.AlbumRequestBody;
-import com.assignmnt.ice.model.request.TrackRequestBody;
+import com.assignmnt.ice.model.request.AlbumRequest;
+import com.assignmnt.ice.model.request.TrackRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.assignmnt.ice.utils.Helper;
@@ -30,17 +30,17 @@ public class AlbumServiceInMemory implements IAlbumService {
     }
 
     @Override
-    public Album addAlbum(AlbumRequestBody albumRequestBody) {
+    public Album addAlbum(AlbumRequest albumRequest) {
 
         //String id = UUID.randomUUID().toString();
-        String id = helper.generateId(albumRequestBody.title());
+        String id = helper.generateId(albumRequest.title());
         if( albumRepo.get(id)!=null){
-            throw new AlbumConflictException("Album already exist with title "+ albumRequestBody.title());
+            throw new AlbumConflictException("Album already exist with title "+ albumRequest.title());
         }
         Album album = new Album();
-        album.setArtist(albumRequestBody.artist());
-        album.setTitle(albumRequestBody.title());
-        album.setReleaseDate(albumRequestBody.releaseDate());
+        album.setArtist(albumRequest.artist());
+        album.setTitle(albumRequest.title());
+        album.setReleaseDate(albumRequest.releaseDate());
         album.setId(id);
         album.setTracks(new LinkedList<>());
         albumRepo.put(
@@ -49,7 +49,7 @@ public class AlbumServiceInMemory implements IAlbumService {
     }
 
     @Override
-    public Album addTracksToAlbum(String albumId, List<TrackRequestBody> trackRequests) {
+    public Album addTracksToAlbum(String albumId, List<TrackRequest> trackRequests) {
         Album album = albumRepo.get(albumId);
         if( albumRepo.get(albumId)==null){
             throw new AlbumNotFoundException("Album not found with id "+ albumId);
@@ -64,12 +64,12 @@ public class AlbumServiceInMemory implements IAlbumService {
     }
 
     @Override
-    public Album setReleaseDate(String albumId, AlbumRequestBody albumRequestBody) {
+    public Album setReleaseDate(String albumId, AlbumRequest albumRequest) {
         Album album = albumRepo.get(albumId);
         if( albumRepo.get(albumId)==null){
             throw new AlbumNotFoundException("Album not found with id "+ albumId);
         }
-        album.setReleaseDate(albumRequestBody.releaseDate());
+        album.setReleaseDate(albumRequest.releaseDate());
         return album;
     }
 

@@ -1,8 +1,8 @@
 package com.assignmnt.ice.controller;
 
 import com.assignmnt.ice.entity.Album;
-import com.assignmnt.ice.model.request.AlbumRequestBody;
-import com.assignmnt.ice.model.request.TrackRequestBody;
+import com.assignmnt.ice.model.request.AlbumRequest;
+import com.assignmnt.ice.model.request.TrackRequest;
 import com.assignmnt.ice.service.IAlbumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,8 @@ public class AlbumController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Album> addAlbum(
-            @RequestBody AlbumRequestBody albumRequestBody) {
-        Album album = albumService.addAlbum(albumRequestBody);
+            @RequestBody AlbumRequest albumRequest) {
+        Album album = albumService.addAlbum(albumRequest);
         URI location = URI.create("/album/"+album.getId());
         return ResponseEntity.created(location).body(album);
     }
@@ -45,7 +45,7 @@ public class AlbumController {
 
     @PatchMapping(path = "/{albumId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Album> updateReleaseDate(@PathVariable String albumId,
-            @RequestBody AlbumRequestBody createTrackRequest) {
+            @RequestBody AlbumRequest createTrackRequest) {
         var track = albumService.setReleaseDate(albumId, createTrackRequest);
         return ResponseEntity.ok(track);
     }
@@ -59,7 +59,7 @@ public class AlbumController {
 
     @PostMapping(path = "/{albumId}/tracks", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addTrackToAlbum(@PathVariable String albumId,
-                                                               @RequestBody List<TrackRequestBody> trackRequests) {
+                                                               @RequestBody List<TrackRequest> trackRequests) {
         var album = albumService.addTracksToAlbum(albumId, trackRequests);
         return ResponseEntity.created(null).build();
     }
