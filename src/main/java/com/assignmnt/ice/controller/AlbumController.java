@@ -9,10 +9,12 @@ import com.assignmnt.ice.service.IAlbumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -20,42 +22,43 @@ import java.util.List;
  * this class.
  */
 @RestController
-@RequestMapping(path = "album")
+@RequestMapping(path = "/album")
 public class AlbumController {
 
     Logger log = LoggerFactory.getLogger(AlbumController.class);
+
     @Autowired
     IAlbumService albumService;
 
-    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateAlbumResponse> addAlbum(
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Album> addAlbum(
             @RequestBody AlbumRequestBody albumRequestBody) {
-        var track = albumService.addAlbum(albumRequestBody);
-        return ResponseEntity.ok(CreateAlbumResponse.from(track));
+        Album album = albumService.addAlbum(albumRequestBody);
+        URI location = URI.create("/album/"+album.getId());
+        return ResponseEntity.created(location).body(album);
     }
+
+    @GetMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Album>> getAlbum(
+            @RequestParam String query) {
+        var track = albumService.searchAlbumsByTitle(query);
+        return ResponseEntity.ok(track);
+    }
+
 
     @PatchMapping(path = "/{albumId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateAlbumResponse> updateReleaseDate(
+    public ResponseEntity<Album> updateReleaseDate(@PathVariable String albumId,
             @RequestBody AlbumRequestBody createTrackRequest) {
-        var track = albumService.addAlbum(createTrackRequest);
-        return ResponseEntity.ok(CreateAlbumResponse.from(track));
+        var track = albumService.setReleaseDate(albumId, createTrackRequest);
+        return ResponseEntity.ok(track);
     }
 
 
-    @PostMapping(path = "{albumId}/tracks", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateTrackResponse> addTrackToAlbum(@PathVariable String albumId,
+    @PostMapping(path = "/{albumId}/tracks", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addTrackToAlbum(@PathVariable String albumId,
                                                                @RequestBody List<TrackRequestBody> trackRequests) {
-        var track = albumService.addTrack(trackRequests);
-        return ResponseEntity.ok(CreateTrackResponse.from(track));
+        var album = albumService.addTracksToAlbum(albumId, trackRequests);
+        return ResponseEntity.created(null).build();
     }
-
-
-    @PostMapping(path = "{albumId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Album>> getAlbums(@PathVariable String albumName) {
-
-        albumService.getAlbums(albumName);
-        return ResponseEntity.ok(albumService.getAlbums(albumName));
-    }
-
 
 }

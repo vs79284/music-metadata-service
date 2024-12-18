@@ -2,13 +2,15 @@ package com.assignmnt.ice.entity;
 
 import jakarta.persistence.*;
 
+import java.time.Duration;
+
 @Entity
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private int duration;
+    private Duration duration;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
@@ -30,11 +32,11 @@ public class Track {
         this.title = title;
     }
 
-    public int getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 

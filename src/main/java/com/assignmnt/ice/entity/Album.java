@@ -1,16 +1,25 @@
 package com.assignmnt.ice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "album")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String title;
     private String artist;
     private LocalDate releaseDate;
@@ -18,11 +27,11 @@ public class Album {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     private List<Track> tracks = new ArrayList<>();
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
