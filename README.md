@@ -9,13 +9,15 @@ This application uses HashMap as in-memory storage to store the album and tracks
 ## Table of Contents
 
 - [Assumptions](#assumptions)
-- [Getting Started](#Getting-Started)
+- [Domain Models](#Domain Models)
+- [ER Diagram](#ER Diagram)
+- [Core Service Design](#Core Service Design) 
+- [Getting Started](#Getting Started)
 - [Project Structure](#Project-Structure)
 - [Code Coverage-JaCoCo](#Code-Coverage)
 - [Swagger](#Swagger-Link)
 - [Spring Actuator](#Spring-Actuator)
 - [Curl](#Curl-Request)
-- [Questions](#Questions)
 
 ## Assumptions
 
@@ -30,7 +32,7 @@ This application uses HashMap as in-memory storage to store the album and tracks
     * This application uses Apache library (org.apache.commons.lang3.StringUtils) for album title search behavior and edit count is less than 3.
    
 4. Persistent Layer
-   * Repository layer will abstract database interaction but won't be fully implemented, instead HashMap is used as local storage.
+   * Repository layer will abstract datastore interaction but won't be fully implemented, instead HashMap is used as local storage.
 
 
 ## Domain Models
@@ -43,6 +45,9 @@ Here we have two different models
 
 2. **Track**
    1. Similarly, for track model, I have choosen parameters such as "track title, durations
+
+## ER Diagram
+![ice.drawio.png](ice.drawio.png)
 
 ## Core Service Design
 
