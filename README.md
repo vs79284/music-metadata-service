@@ -1,9 +1,10 @@
-# Case Study - Price service
+# Assignment - music-metadata-service
 
 ## Description
 
-The '**Priceservice**' provides a REST interface for the users to fetch prices for the requested accommodation.
-The application uses recent files shared by the partners with real prices in EUR currency to fetch the price list.
+The '**music-metadata-service**' provides a REST interface for the users to perform below behavior on the album.
+is a simple and scalable design which includes domain modeling, core service design, and behavior implementation.
+This application uses HashMap as in-memory storage to store the album and tracks details.
 
 ## Table of Contents
 
@@ -18,13 +19,19 @@ The application uses recent files shared by the partners with real prices in EUR
 
 ## Assumptions
 
-1. Artist as a non-separate concept.
-    * Reason: Currently, the dataloader bean is replacing the existing price data in case of any change in file.
-    * Impact: If this contract changes to incremental data, we need to change logic to add data in existing object
-      rather than full replacement.
 
-3. Accommodation price can be available with multiple partners
-    * Example: accommodation id 4567 is present in data files shared by advertiser 100, 200 and 300.
+1. Artist as a non-separate concept.
+    * Reason: The artist is treated as an attribute of an album, and there is no standalone artist entity.
+    * Impact: If this contract changes to incremental data, we need to add one more Entity to store the artist information
+
+2. Album and Track Relationship
+    * An album can have multiple tracks( 1:n) relationship. One track will only belong to single album.
+
+3. Levenshtein distance algorithm
+    * This application uses Apache library (org.apache.commons.lang3.StringUtils) for album title search behavior.
+   
+4. Persistent Layer
+   * Repository layer will abstract database interaction but won't be fully implemented, instead HashMap is used as local storage.
 
 ## Getting Started
 
