@@ -6,6 +6,12 @@ The '**music-metadata-service**' provides a REST interface for the users to perf
 is a simple and scalable design which includes domain modeling, core service design, and behavior implementation.
 This application uses HashMap as in-memory storage to store the album and tracks details.
 
+1. add an album with an artist
+2. add tracks to album;
+3. set album release date;
+4. a way to check if album is released;
+5. search for album by title using Levenshtein distance algorithm.
+
 ## Table of Contents
 
 - [Assumptions](#assumptions)
@@ -177,4 +183,9 @@ This structure of this project is based on multi-tier architecture where we have
 ### Curl Request
 ` curl --location 'http://localhost:8081/album' --header 'Content-Type: application/json' --data '{"title":"Test Album","artist":"Test Album","releaseDate":[2024,12,18]}'
 
-There are efficient datastore are available such as Elasticsearch and fuzzy/match query can be used.
+### Future Consideration
+* There are efficient datastore are available such as Elasticsearch and fuzzy/match query can be used.
+* Extend the current solutions to support Track search by implementing the search interface
+  * AlbumSearchController - Search the Album by title
+  * TrackSearchController - Search the track by title
+* Add pagination logic to limit the search result
